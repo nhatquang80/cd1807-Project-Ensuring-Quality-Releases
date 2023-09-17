@@ -1,8 +1,8 @@
 # Azure subscription vars
-subscription_id = "${env.ARM_SUBSCRIPTION_ID}"
-client_id = "${ARM_CLIENT_ID}"
-client_secret = "${ARM_CLIENT_SECRET}"
-tenant_id = "${ARM_TENANT_ID}"
+subscription_id = "${TF_VAR_subscription_id}"
+client_id = "${TF_VAR_client_id}"
+client_secret = "${TF_VAR_client_secret}"
+tenant_id = "${TF_VAR_tenant_id}"
 
 # Resource Group/Location
 location = "eastus"
