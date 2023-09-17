@@ -9,5 +9,5 @@ resource "azurerm_subnet" "subnet" {
   name                 = "${var.application_type}-${var.resource_type}"
   resource_group_name  = var.resource_group
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefix       = var.address_prefix_test
+  address_prefixes       = [var.address_prefix_test]
 }
