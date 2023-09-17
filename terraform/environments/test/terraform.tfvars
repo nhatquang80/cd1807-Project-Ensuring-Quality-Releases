@@ -1,6 +1,6 @@
 # Resource Group/Location
 location = "eastus"
-resource_group = "udacity-rg"
+resource_group = "udacity-project-rg"
 application_type = "udacity"
 
 # Network
