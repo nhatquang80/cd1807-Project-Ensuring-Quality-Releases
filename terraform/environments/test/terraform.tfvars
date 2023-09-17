@@ -6,7 +6,7 @@ tenant_id = "${ARM_TENANT_ID}"
 
 # Resource Group/Location
 location = "eastus"
-resource_group_name = "udacity-rg"
+resource_group = "udacity-rg"
 application_type = "udacity"
 
 # Network
