@@ -8,8 +8,8 @@ provider "azurerm" {
 
 terraform {
   backend "azurerm" {
-    resource_group_name  = var.resource_group
-    storage_account_name = var.storage_account_name
+    resource_group_name  = "${var.resource_group}"
+    storage_account_name = "${var.storage_account_name}"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
     access_key = "${env.ARM_ACCESS_KEY}"
