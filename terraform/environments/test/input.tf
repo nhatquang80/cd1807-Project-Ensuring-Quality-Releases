@@ -15,4 +15,3 @@ variable address_space {}
 
 # VM
 variable vm_admin_username {}
-variable vm_public_key {}
