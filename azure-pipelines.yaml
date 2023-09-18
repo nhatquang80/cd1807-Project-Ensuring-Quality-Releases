@@ -39,7 +39,7 @@ stages:
       displayName: Check environment variables
       inputs:
         targetType: 'inline'
-        script: printenv | grep ^TF_VAR*
+        script: 'env | sort'
     
     # Run Terraform Init on the pipeline agent 
     # ToDo: Replace the resource group name, storage account name, and container name below
