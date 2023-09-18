@@ -91,6 +91,21 @@ stages:
         TF_VAR_subscription_id: '$(subscription_id)'
         TF_VAR_tenant_id: '$(tenant_id)'
 
+    # Run Terraform Apply
+    - task: TerraformTaskV4@4
+      displayName: Terraform apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+      env:
+        TF_VAR_access_key: '$(access_key)'
+        TF_VAR_client_id: '$(client_id)'
+        TF_VAR_client_secret: '$(client_secret)'
+        TF_VAR_subscription_id: '$(subscription_id)'
+        TF_VAR_tenant_id: '$(tenant_id)'
+
     # ToDo: Change the workingDirectory path, as applicable to you
     # Destroy the resources in Azure by running a separate pipeline. 
     - task: TerraformTaskV4@4
@@ -100,6 +115,12 @@ stages:
         command: 'destroy'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+      env:
+        TF_VAR_access_key: '$(access_key)'
+        TF_VAR_client_id: '$(client_id)'
+        TF_VAR_client_secret: '$(client_secret)'
+        TF_VAR_subscription_id: '$(subscription_id)'
+        TF_VAR_tenant_id: '$(tenant_id)'
 
 #--------------------------------------------#    
 #     # Postman - Install Newman    
