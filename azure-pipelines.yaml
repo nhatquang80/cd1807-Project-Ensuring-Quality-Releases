@@ -40,6 +40,8 @@ stages:
       inputs:
         targetType: 'inline'
         script: 'env | sort'
+      env:
+        TF_VAR_tenant_id: $(tenant_id)
     
     # Run Terraform Init on the pipeline agent 
     # ToDo: Replace the resource group name, storage account name, and container name below
