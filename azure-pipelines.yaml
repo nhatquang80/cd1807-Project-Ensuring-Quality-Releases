@@ -34,6 +34,13 @@ stages:
       displayName: 'Terrafom installation'
       inputs:
         terraformVersion: 'latest'
+
+    # Install SSH key
+    - task: InstallSSHKey@0
+      displayName: Security Access
+      inputs:
+        sshPublicKey: '$(public_key)'
+        sshKeySecureFile: 'id_rsa'
     
     - task: Bash@3
       displayName: Check environment variables
