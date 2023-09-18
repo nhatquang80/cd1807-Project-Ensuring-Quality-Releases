@@ -68,14 +68,20 @@ stages:
         provider: 'azurerm'
         command: 'validate'
 
-    # Run Terraform Apply
+    # Run Terraform Plan
     - task: TerraformTaskV4@4
-      displayName: Terraform apply
+      displayName: Terraform plan
       inputs:
         provider: 'azurerm'
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+      env:
+        TF_VAR_access_key: $(access_key)
+        TF_VAR_client_id: $(lient_id)
+        TF_VAR_client_secret: $(client_secret)
+        TF_VAR_subscription_id: $(subscription_id)
+        TF_VAR_tenant_id: $(tenant_id)
 
     # ToDo: Change the workingDirectory path, as applicable to you
     # Destroy the resources in Azure by running a separate pipeline. 
