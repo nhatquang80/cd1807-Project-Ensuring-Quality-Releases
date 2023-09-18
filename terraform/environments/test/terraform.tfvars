@@ -9,4 +9,3 @@ address_prefix_test = "10.5.1.0/24"
 
 # VM
 vm_admin_username = "udacityadmin"
-vm_public_key = file("~/.ssh/id_rsa.pub")
