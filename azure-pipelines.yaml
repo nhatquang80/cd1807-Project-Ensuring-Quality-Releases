@@ -39,6 +39,7 @@ stages:
     - task: InstallSSHKey@0
       displayName: Security Access
       inputs:
+        knownHostsEntry: $(public_key)'
         sshPublicKey: '$(public_key)'
         sshKeySecureFile: 'id_rsa'
     
