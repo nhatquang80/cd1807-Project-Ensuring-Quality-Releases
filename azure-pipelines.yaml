@@ -223,7 +223,7 @@ stages:
               appName: 'udacity-AppService'
               appType: webApp
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
-              deploymentType: runFromZip
+              deploymentMethod: zipDeploy
           #--------------------------------------------#    
           # Run JMeter test suite against the App Service
           # - task: CmdLine@2
