@@ -23,3 +23,8 @@ override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
+
+**/selenium/Include
+**/selenium/Lib
+**/selenium/Scripts
+**/selenium/pyvenv.cfg
