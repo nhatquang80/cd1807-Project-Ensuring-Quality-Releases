@@ -292,6 +292,11 @@ stages:
   jobs:
   - job: JMETERTests
     displayName: Test JMeter
+    pool:
+        vmImage: 'VirtualMachine'
+    # environment:
+    #   name: test
+    #   resourceType: VirtualMachine
     steps:
     - bash: |
         sudo apt-get install openjdk-11-jre-headless -y
