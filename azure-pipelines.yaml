@@ -26,6 +26,7 @@ stages:
 - stage: Build
   jobs:
   - job: BuildInfrastructure
+    displayName: Build Infrastructure
     steps:
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
@@ -158,8 +159,9 @@ stages:
   #--------------------------------------------#  
   # Deploy FakeRestAPI Web App
   - deployment: FakeRestAPI
-    environment: 
-      name: 'test'
+    displayName: FakeRestAPI
+    environment:
+      name: test
       resourceType: VirtualMachine
     strategy:
       runOnce:
@@ -237,7 +239,13 @@ stages:
 - stage: Test
   jobs:
   - job: TestNewMan
+    displayName: Postman Tests
     steps:
+    - task: NodeTool@0
+      displayName: Install Node v18.X
+      inputs:
+        versionSpec: '18.x'
+        checkLatest: true
     #--------------------------------------------#    
     # Postman - Install Newman    
     # ToDo: Update the command and verify the working directory
@@ -283,7 +291,7 @@ stages:
 - stage: Destroy
   jobs:
   - job: DestroyInfrastructure
-    condition: true
+    condition: false
     steps:
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
