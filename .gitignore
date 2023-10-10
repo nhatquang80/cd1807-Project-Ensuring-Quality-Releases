@@ -1,5 +1,4 @@
 **/*.tfstate
-**/*.json
 **/*.exe
 # Local .terraform directories
 **/.terraform/*
@@ -28,3 +27,5 @@ override.tf.json
 **/selenium/Lib
 **/selenium/Scripts
 **/selenium/pyvenv.cfg
+
+.vscode
