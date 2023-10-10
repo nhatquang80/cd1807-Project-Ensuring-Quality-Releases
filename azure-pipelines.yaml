@@ -275,7 +275,7 @@ stages:
     - task: CmdLine@2
       inputs:
         script: 'ls -la ./Results/'
-        workingDirectory: '$(System.DefaultWorkingDirectory/automatedtesting/postman'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
     # Postman - Publish Results 
     # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
     - task: PublishTestResults@2
