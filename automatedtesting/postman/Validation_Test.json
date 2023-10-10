@@ -19,7 +19,7 @@
 							"",
 							"pm.test(\"Found activities\", function () {",
 							"    for (i = 0; i < count; i++) {",
-							"        pm.expect(jsonData[i].id).to.eql(i+1);",
+							"        pm.expect(jsonData[i].ID).to.eql(i+1);",
 							"    }",
 							"});",
 							"",
@@ -58,7 +58,7 @@
 							"var count = 200;",
 							"pm.test(\"Found authors\", function () {",
 							"    for (i = 0; i < count; i++) {",
-							"        pm.expect(jsonData[i].id).to.eql(i+1);",
+							"        pm.expect(jsonData[i].ID).to.eql(i+1);",
 							"    }",
 							"});",
 							"",
@@ -105,7 +105,7 @@
 							"",
 							"pm.test(\"Found books\", function () {",
 							"    for (i = 0; i < count; i++) {",
-							"        pm.expect(jsonData[i].id).to.eql(i+1);",
+							"        pm.expect(jsonData[i].ID).to.eql(i+1);",
 							"    }",
 							"});",
 							"",
@@ -145,7 +145,7 @@
 							"",
 							"pm.test(\"Found cover photos\", function () {",
 							"    for (i = 0; i < expectedCoverPhotos; i++) {",
-							"        pm.expect(jsonData[i].id).to.eql(i+1);",
+							"        pm.expect(jsonData[i].ID).to.eql(i+1);",
 							"    }",
 							"});",
 							"",
@@ -184,7 +184,7 @@
 							"",
 							"pm.test(\"Found users\", function () {",
 							"    for (i = 0; i < count; i++) {",
-							"        pm.expect(jsonData[i].id).to.eql(i+1);",
+							"        pm.expect(jsonData[i].ID).to.eql(i+1);",
 							"    }",
 							"});",
 							"",
@@ -222,7 +222,7 @@
 							"let id = parseInt(pm.environment.get(\"id\"));",
 							"",
 							"pm.test(\"Create activity response body as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(id);",
+							"    pm.expect(jsonData.ID).to.eql(id);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -264,7 +264,7 @@
 							"let id = parseInt(pm.environment.get(\"id\"));",
 							"",
 							"pm.test(\"Create author response body as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(id);",
+							"    pm.expect(jsonData.ID).to.eql(id);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -306,7 +306,7 @@
 							"let id = parseInt(pm.environment.get(\"id\"));",
 							"",
 							"pm.test(\"Create book response body as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(id);",
+							"    pm.expect(jsonData.ID).to.eql(id);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -348,7 +348,7 @@
 							"let id = parseInt(pm.environment.get(\"id\"));",
 							"",
 							"pm.test(\"Create cover photo response body as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(id);",
+							"    pm.expect(jsonData.ID).to.eql(id);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -390,7 +390,7 @@
 							"let id = parseInt(pm.environment.get(\"id\"));",
 							"",
 							"pm.test(\"Create user response body as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(id);",
+							"    pm.expect(jsonData.ID).to.eql(id);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -431,7 +431,7 @@
 							"var jsonData = pm.response.json();",
 							"",
 							"pm.test(\"Activity with ID 3 as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(3);",
+							"    pm.expect(jsonData.ID).to.eql(3);",
 							"});",
 							"",
 							""
@@ -466,7 +466,7 @@
 							"var jsonData = pm.response.json();",
 							"",
 							"pm.test(\"Author with ID 3 as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(3);",
+							"    pm.expect(jsonData.ID).to.eql(3);",
 							"});",
 							""
 						],
@@ -500,7 +500,7 @@
 							"var jsonData = pm.response.json();",
 							"",
 							"pm.test(\"Book with ID 3 as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(3);",
+							"    pm.expect(jsonData.ID).to.eql(3);",
 							"});",
 							""
 						],
@@ -534,7 +534,7 @@
 							"var jsonData = pm.response.json();",
 							"",
 							"pm.test(\"Cover Photo with ID 3 as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(3);",
+							"    pm.expect(jsonData.ID).to.eql(3);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -567,7 +567,7 @@
 							"var jsonData = pm.response.json();",
 							"",
 							"pm.test(\"User with ID 3 as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(3);",
+							"    pm.expect(jsonData.ID).to.eql(3);",
 							"});",
 							""
 						],
@@ -601,7 +601,7 @@
 							"var jsonData = pm.response.json();",
 							"",
 							"pm.test(\"Update with ID 3 as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(3);",
+							"    pm.expect(jsonData.ID).to.eql(3);",
 							"});",
 							""
 						],
@@ -644,7 +644,7 @@
 							"var jsonData = pm.response.json();",
 							"",
 							"pm.test(\"Update with ID 3 as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(3);",
+							"    pm.expect(jsonData.ID).to.eql(3);",
 							"});",
 							""
 						],
@@ -687,7 +687,7 @@
 							"var jsonData = pm.response.json();",
 							"",
 							"pm.test(\"Update with ID 3 as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(3);",
+							"    pm.expect(jsonData.ID).to.eql(3);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -729,7 +729,7 @@
 							"var jsonData = pm.response.json();",
 							"",
 							"pm.test(\"Update with ID 3 as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(3);",
+							"    pm.expect(jsonData.ID).to.eql(3);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -771,7 +771,7 @@
 							"var jsonData = pm.response.json();",
 							"",
 							"pm.test(\"Update with ID 3 as expected\", function () {",
-							"    pm.expect(jsonData.id).to.eql(3);",
+							"    pm.expect(jsonData.ID).to.eql(3);",
 							"});"
 						],
 						"type": "text/javascript"
