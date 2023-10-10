@@ -263,7 +263,7 @@ stages:
       continueOnError: true
       inputs:
         script: 'newman run Validation_Test.json -e Env.json --reporters cli,junit --reporter-junit-export Results/TEST-DataValidation.xml'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
     # Postman Regression Test Suite    
     # ToDo: Verify the working directory
     - task: CmdLine@2
@@ -271,11 +271,11 @@ stages:
       continueOnError: true
       inputs:
         script: 'newman run Regression_Test.json -e Env.json --reporters cli,junit --reporter-junit-export Results/TEST-Regression.xml'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
     - task: CmdLine@2
       inputs:
         script: 'ls -la ./Results/'
-        workingDirectory: '$(System.DefaultWorkingDirectory)'
+        workingDirectory: '$(System.DefaultWorkingDirectory'
     # Postman - Publish Results 
     # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
     - task: PublishTestResults@2
@@ -283,7 +283,7 @@ stages:
       inputs:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/TEST-*.xml'
-        # searchFolder: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+        # searchFolder: '$(System.DefaultWorkingDirectory)'
         mergeTestResults: true
         testRunTitle: "Newman Test Results"
 
@@ -341,6 +341,46 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)/log/jmeter
       displayName: 'Publish JMeter logs'
       artifact: drop-jmeter-logs
+
+- stage: UITests
+  displayName: UI Tests - Selenium
+  jobs:
+  - deployment: VMRunUITests
+    displayName: Run UI Tests
+    environment:
+      name: test
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            displayName: 'Download Selenium'
+            artifact: drop-uitests
+          - task: Bash@3
+            displayName: Selenium UI Tests
+            inputs:
+              targetType: 'inline'
+              script: |
+                unzip -o $(Pipeline.Workspace)/drop-uitest/$(Build.BuildId)-uitests.zip -d .
+                sudo mkdir -p /var/log/selenium
+                sudo chmod 664 /var/log/selenium
+                
+                sudo python3 -u uitests.py 2>&1 | sudo tee -a /var/log/selenium/selenium-test.log
+                # copy selenium log file to $(System.DefaultWorkingDirectory)/log/selenium/
+                cd $(System.DefaultWorkingDirectory)
+                mkdir -p log/selenium
+                pwd
+                sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
+                ls -la
+          - publish: $(Build.ArtifactStagingDirectory)/log/selenium
+            displayName: 'Publish selenium logs'
+            artifact: drop-selenium-logs
+          # - task: PublishPipelineArtifact@1
+          #   displayName: Publish selenium logs
+          #   inputs:
+          #     targetPath: '$(System.DefaultWorkingDirectory)/log/selenium/selenium-test.log'
+          #     artifactName: 'drop-selenium-logs'
 
 #--------------------------------------------#  
 # DESTROY STAGE
