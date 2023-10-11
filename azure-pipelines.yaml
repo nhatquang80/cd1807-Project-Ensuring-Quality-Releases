@@ -321,7 +321,9 @@ stages:
                 # sudo apt-get install python3-pip -y
                 # sudo apt-get install unzip -y
                 # sudo apt-get install -y chromium-browser
-                pip3 install selenium --upgrade
+                # pip3 install selenium --upgrade
+
+                pip install -U urllib3 requests
 
                 cd ~
                 pwd
@@ -360,6 +362,10 @@ stages:
                 pwd
                 sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
                 ls -la
+
+                # sudo mkdir /var/logs
+                # python3 uitests.py > ui-logs.log
+                # sudo mv ui-logs.log /var/logs
           - publish: $(System.DefaultWorkingDirectory)/log/selenium
             displayName: 'Publish selenium logs'
             artifact: drop-selenium-logs
