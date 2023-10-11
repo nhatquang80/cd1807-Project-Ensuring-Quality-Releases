@@ -116,11 +116,11 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitest.zip'
     # Selenium Test Suite - Publish the package  
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip   # Same as the archiveFile artifact above. 
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitest.zip   # Same as the archiveFile artifact above. 
       displayName: 'Upload Package'
-      artifact: drop-uitests
+      artifact: drop-uitest
 
     #--------------------------------------------#    
     # FakeRestAPI - Archive
@@ -200,7 +200,7 @@ stages:
   #       deploy:
   #         steps:
   #         # - download: current
-  #         #   artifact: drop-uitests
+  #         #   artifact: drop-uitest
             
   #         - task: Bash@3
   #           inputs:
@@ -220,9 +220,9 @@ stages:
   #               if [ ! -d "$DIR" ]; then
   #                   mkdir app
   #               fi
-  #               # mv /home/azureuser/azagent/_work/1/drop-uitests/$(Build.BuildId)-uitests.zip app
+  #               # mv /home/azureuser/azagent/_work/1/drop-uitest/$(Build.BuildId)-uitest.zip app
   #               cd app
-  #               # unzip -o $(Build.BuildId)-uitests.zip
+  #               # unzip -o $(Build.BuildId)-uitest.zip
   #               FILE=/home/azureuser/app/chromedriver_linux64.zip
   #               if [ ! -f "$FILE" ]; then
   #                   LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
@@ -369,17 +369,17 @@ stages:
           steps:
           - download: current
             displayName: 'Download Selenium'
-            artifact: drop-uitests
+            artifact: drop-uitest
           - task: Bash@3
             displayName: Selenium UI Tests
             inputs:
               targetType: 'inline'
               script: |
-                unzip -o $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d .
+                unzip -o $(Pipeline.Workspace)/drop-uitest/$(Build.BuildId)-uitest.zip -d .
                 sudo mkdir -p /var/log/selenium
                 sudo chmod 664 /var/log/selenium
                 
-                sudo python3 -u uitests.py 2>&1 | sudo tee -a /var/log/selenium/selenium-test.log
+                sudo python3 -u uitest.py 2>&1 | sudo tee -a /var/log/selenium/selenium-test.log
                 # copy selenium log file to $(System.DefaultWorkingDirectory)/log/selenium/
                 cd $(System.DefaultWorkingDirectory)
                 mkdir -p log/selenium
