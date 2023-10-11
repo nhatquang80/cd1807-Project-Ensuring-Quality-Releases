@@ -406,7 +406,7 @@ stages:
               pwd
               ls -la
             displayName: Delete original JMeter test HTML reports
-          - publish: $(Build.ArtifactStagingDirectory)/log/jmeter
+          - publish: $(System.DefaultWorkingDirectory)/log/jmeter
             displayName: 'Publish JMeter logs'
             artifact: drop-jmeter-logs
 
