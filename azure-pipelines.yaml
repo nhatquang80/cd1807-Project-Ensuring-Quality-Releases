@@ -386,7 +386,7 @@ stages:
                 pwd
                 sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
                 ls -la
-          - publish: $(Build.ArtifactStagingDirectory)/log/selenium
+          - publish: $(System.DefaultWorkingDirectory)/log/selenium
             displayName: 'Publish selenium logs'
             artifact: drop-selenium-logs
 
