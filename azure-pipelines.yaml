@@ -375,7 +375,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                unzip -o $(Pipeline.Workspace)/drop-uitest/$(Build.BuildId)-uitests.zip -d .
+                unzip -o $(Pipeline.Workspace)/drop-uitests/$(Build.BuildId)-uitests.zip -d .
                 sudo mkdir -p /var/log/selenium
                 sudo chmod 664 /var/log/selenium
                 
