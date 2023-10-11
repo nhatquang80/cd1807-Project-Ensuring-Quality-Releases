@@ -387,6 +387,7 @@ stages:
               script: |
                 pwd
                 ls -la
+                which zip
               workingDirectory: '$(System.DefaultWorkingDirectory)'
           - task: ArchiveFiles@2
             displayName: Archive JMeter stress test HTML report
