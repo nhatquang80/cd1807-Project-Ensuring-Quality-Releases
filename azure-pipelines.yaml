@@ -360,6 +360,7 @@ stages:
           - bash: |
               unzip -o $(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip -d .
               sudo apt-get install openjdk-11-jre-headless -y
+              sudo apt-get install zip
               java -version
               wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.tgz -O jmeter.tgz
               tar xzvf jmeter.tgz
@@ -382,9 +383,6 @@ stages:
                                             -e -f -o log/jmeter/endurance-test-html-report \
                                             -j log/jmeter/endurance-test-jmeter.log
             displayName: JMeter endurance test
-          - bash: |
-              which zip              
-            displayName: which zip
           - task: ArchiveFiles@2
             displayName: Archive JMeter stress test HTML report
             inputs:
