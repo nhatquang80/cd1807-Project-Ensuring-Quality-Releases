@@ -43,8 +43,8 @@ if __name__ == "__main__":
     PASSWORD = 'secret_sauce'
 
     chromeOptions = ChromeOptions()
-    # chromeOptions.add_argument('--no-sandbox')
-    # chromeOptions.add_argument("--headless") 
+    chromeOptions.add_argument('--no-sandbox')
+    chromeOptions.add_argument("--headless") 
     chromeOptions.add_experimental_option('excludeSwitches', ['enable-logging'])
     
     driver = webdriver.Chrome(options=chromeOptions)
