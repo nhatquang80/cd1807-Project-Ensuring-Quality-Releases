@@ -154,8 +154,8 @@ stages:
 #--------------------------------------------#  
 # DEPLOYMENT STAGE
 #--------------------------------------------#    
-- stage: Deploy
-  jobs:
+# - stage: Deploy
+#   jobs:
   #--------------------------------------------#  
   # Deploy FakeRestAPI Web App
   # - deployment: FakeRestAPI
