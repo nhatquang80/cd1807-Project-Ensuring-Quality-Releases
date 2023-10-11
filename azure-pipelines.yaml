@@ -332,13 +332,13 @@ stages:
                 # mv /home/azureuser/azagent/_work/1/drop-uitest/$(Build.BuildId)-uitest.zip app
                 cd app
                 # unzip -o $(Build.BuildId)-uitest.zip
-                FILE=/home/azureuser/app/chromedriver_linux64.zip
-                if [ ! -f "$FILE" ]; then
-                    LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-                    wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-                    unzip -o chromedriver_linux64.zip
-                    sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
-                fi
+                # FILE=/home/azureuser/app/chromedriver_linux64.zip
+                # if [ ! -f "$FILE" ]; then
+                #     LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+                #     wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+                #     unzip -o chromedriver_linux64.zip
+                #     sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
+                # fi
                 # export PATH=$PATH:/home/azureuser/app
                 # echo "Starting Selenium Tests"
                 # python3 uitest.py >> selenium.log
