@@ -323,7 +323,7 @@ stages:
                 # sudo apt-get install -y chromium-browser
                 # pip3 install selenium --upgrade
 
-                pip install -U urllib3 requests
+                pip3 install -U urllib3 requests
 
                 cd ~
                 pwd
