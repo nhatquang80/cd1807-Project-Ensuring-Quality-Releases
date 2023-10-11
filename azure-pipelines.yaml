@@ -321,9 +321,10 @@ stages:
                 # sudo apt-get install python3-pip -y
                 # sudo apt-get install unzip -y
                 # sudo apt-get install -y chromium-browser
+                sudo apt-get install -y chromium-chromedriver
                 # pip3 install selenium --upgrade
 
-                pip3 install -U urllib3 requests
+                # pip3 install -U urllib3 requests
 
                 cd ~
                 pwd
@@ -355,6 +356,7 @@ stages:
                 sudo mkdir -p /var/log/selenium
                 sudo chmod 664 /var/log/selenium                
                 
+                # python3 uitests.py > ui-logs.log
                 python3 -u uitest.py 2>&1 | sudo tee -a /var/log/selenium/selenium-test.log
                 # copy selenium log file to $(System.DefaultWorkingDirectory)/log/selenium/
                 cd $(System.DefaultWorkingDirectory)
