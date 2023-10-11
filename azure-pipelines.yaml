@@ -154,8 +154,8 @@ stages:
 #--------------------------------------------#  
 # DEPLOYMENT STAGE
 #--------------------------------------------#    
-# - stage: Deploy
-#   jobs:
+- stage: Deploy
+  jobs:
   #--------------------------------------------#  
   # Deploy FakeRestAPI Web App
   # - deployment: FakeRestAPI
@@ -190,50 +190,50 @@ stages:
               
   #--------------------------------------------#  
   # Selenium | Functional UI Tests
-  # - deployment: VMDeploy
-  #   displayName: Selenium Tests
-  #   environment:
-  #     name: test
-  #     resourceType: VirtualMachine
-  #   strategy:
-  #     runOnce:
-  #       deploy:
-  #         steps:
-  #         # - download: current
-  #         #   artifact: drop-uitest
+  - deployment: VMDeploy
+    displayName: Selenium Tests
+    environment:
+      name: test
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          # - download: current
+          #   artifact: drop-uitest
             
-  #         - task: Bash@3
-  #           inputs:
-  #             targetType: 'inline'
-  #             script: |           
-  #               #! /bin/bash
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |           
+                #! /bin/bash
                 
-  #               # sudo apt-get upgrade -y
-  #               # sudo apt-get install python-pip -y
-  #               # sudo apt-get install unzip -y
-  #               # sudo apt-get install -y chromium-browser
-  #               # pip install selenium
+                # sudo apt-get upgrade -y
+                # sudo apt-get install python-pip -y
+                # sudo apt-get install unzip -y
+                # sudo apt-get install -y chromium-browser
+                # pip install selenium
 
-  #               cd ~
-  #               pwd
-  #               DIR=/home/azureuser/app
-  #               if [ ! -d "$DIR" ]; then
-  #                   mkdir app
-  #               fi
-  #               # mv /home/azureuser/azagent/_work/1/drop-uitest/$(Build.BuildId)-uitest.zip app
-  #               cd app
-  #               # unzip -o $(Build.BuildId)-uitest.zip
-  #               FILE=/home/azureuser/app/chromedriver_linux64.zip
-  #               if [ ! -f "$FILE" ]; then
-  #                   LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-  #                   wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-  #                   unzip -o chromedriver_linux64.zip
-  #                   sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
-  #               fi
-  #               # export PATH=$PATH:/home/azureuser/app
-  #               # echo "Starting Selenium Tests"
-  #               # python3 uitest.py >> selenium.log
-  #               # echo "Completed Selenium Tests. Check selenium.log for results."
+                cd ~
+                pwd
+                DIR=/home/azureuser/app
+                if [ ! -d "$DIR" ]; then
+                    mkdir app
+                fi
+                # mv /home/azureuser/azagent/_work/1/drop-uitest/$(Build.BuildId)-uitest.zip app
+                cd app
+                # unzip -o $(Build.BuildId)-uitest.zip
+                FILE=/home/azureuser/app/chromedriver_linux64.zip
+                if [ ! -f "$FILE" ]; then
+                    LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+                    wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+                    unzip -o chromedriver_linux64.zip
+                    sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
+                fi
+                # export PATH=$PATH:/home/azureuser/app
+                # echo "Starting Selenium Tests"
+                # python3 uitest.py >> selenium.log
+                # echo "Completed Selenium Tests. Check selenium.log for results."
 
 #--------------------------------------------#  
 # TEST STAGE
