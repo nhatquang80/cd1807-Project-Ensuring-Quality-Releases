@@ -372,12 +372,14 @@ stages:
                                             -l log/jmeter/stress-test-result.csv \
                                             -e -f -o log/jmeter/stress-test-html-report \
                                             -j log/jmeter/stress-test-jmeter.log
+              pwd
             displayName: JMeter stress test
           - bash: |
               apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/endurance-test.jmx \
                                             -l log/jmeter/endurance-test-result.csv \
                                             -e -f -o log/jmeter/endurance-test-html-report \
                                             -j log/jmeter/endurance-test-jmeter.log
+              pwd
             displayName: JMeter endurance test
           - task: ArchiveFiles@2
             displayName: Archive JMeter stress test HTML report
