@@ -382,13 +382,9 @@ stages:
                                             -e -f -o log/jmeter/endurance-test-html-report \
                                             -j log/jmeter/endurance-test-jmeter.log
             displayName: JMeter endurance test
-          - task: CmdLine@2
-            inputs:
-              script: |
-                pwd
-                ls -la
-                which zip
-              workingDirectory: '$(System.DefaultWorkingDirectory)'
+          - bash: |
+              which zip              
+            displayName: which zip
           - task: ArchiveFiles@2
             displayName: Archive JMeter stress test HTML report
             inputs:
