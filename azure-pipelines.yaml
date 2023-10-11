@@ -342,6 +342,70 @@ stages:
 #       displayName: 'Publish JMeter logs'
 #       artifact: drop-jmeter-logs
 
+- stage: JMeterTests
+  displayName: JMeter Tests
+  jobs:
+  - deployment: JMETERTests
+    displayName: Test JMeter
+    environment:
+      name: test
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            displayName: 'Download Perf Test'
+            artifact: drop-perftests
+          - bash: |
+              sudo apt-get install openjdk-11-jre-headless -y
+              java -version
+              wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.tgz -O jmeter.tgz
+              tar xzvf jmeter.tgz
+              apache-jmeter-5.6.2/bin/jmeter --version
+              mkdir -p log/jmeter
+              pwd
+              ls -la
+            displayName: Install JMeter
+          - bash: |
+              apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/stress-test.jmx \
+                                            -l log/jmeter/stress-test-result.csv \
+                                            -e -f -o log/jmeter/stress-test-html-report \
+                                            -j log/jmeter/stress-test-jmeter.log
+            displayName: JMeter stress test
+          - bash: |
+              apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/endurance-test.jmx \
+                                            -l log/jmeter/endurance-test-result.csv \
+                                            -e -f -o log/jmeter/endurance-test-html-report \
+                                            -j log/jmeter/endurance-test-jmeter.log
+            displayName: JMeter endurance test
+          - task: ArchiveFiles@2
+            displayName: Archive JMeter stress test HTML report
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/log/jmeter/stress-test-html-report'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter/stress-test-html-report-$(Build.BuildId).zip'
+              verbose: true
+          - task: ArchiveFiles@2
+            displayName: Archive JMeter endurance test HTML report
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/log/jmeter/endurance-test-html-report'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter/endurance-test-html-report-$(Build.BuildId).zip'
+              verbose: true
+          - bash: |
+              rm -rf log/jmeter/stress-test-html-report
+              rm -rf log/jmeter/endurance-test-html-report
+              cd log/jmeter
+              pwd
+              ls -la
+            displayName: Delete original JMeter test HTML reports
+          - publish: $(Build.ArtifactStagingDirectory)/log/jmeter
+            displayName: 'Publish JMeter logs'
+            artifact: drop-jmeter-logs
+
 # - stage: UITests
 #   displayName: UI Tests - Selenium
 #   jobs:
@@ -388,7 +452,7 @@ stages:
 - stage: Destroy
   jobs:
   - job: DestroyInfrastructure
-    condition: true
+    condition: false
     steps:
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
