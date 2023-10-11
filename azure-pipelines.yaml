@@ -28,84 +28,84 @@ stages:
   - job: BuildInfrastructure
     displayName: Build Infrastructure
     steps:
-    #--------------------------------------------#  
-    # Use Terraform to create the Infrastructure      
-    # Install Terraform on the pipeline agent 
-    - task: TerraformInstaller@1
-      displayName: 'Terrafom installation'
-      inputs:
-        terraformVersion: 'latest'
+    # #--------------------------------------------#  
+    # # Use Terraform to create the Infrastructure      
+    # # Install Terraform on the pipeline agent 
+    # - task: TerraformInstaller@1
+    #   displayName: 'Terrafom installation'
+    #   inputs:
+    #     terraformVersion: 'latest'
 
-    # Install SSH key
-    - task: InstallSSHKey@0
-      displayName: Security Access
-      inputs:
-        knownHostsEntry: $(public_key)'
-        sshPublicKey: '$(public_key)'
-        sshKeySecureFile: 'id_rsa'
+    # # Install SSH key
+    # - task: InstallSSHKey@0
+    #   displayName: Security Access
+    #   inputs:
+    #     knownHostsEntry: $(public_key)'
+    #     sshPublicKey: '$(public_key)'
+    #     sshKeySecureFile: 'id_rsa'
     
-    - task: Bash@3
-      displayName: Check environment variables
-      inputs:
-        targetType: 'inline'
-        script: 'env | sort'
-      env:
-        TF_VAR_access_key: '$(access_key)'
-        TF_VAR_client_id: '$(client_id)'
-        TF_VAR_client_secret: '$(client_secret)'
-        TF_VAR_subscription_id: '$(subscription_id)'
-        TF_VAR_tenant_id: '$(tenant_id)'
+    # - task: Bash@3
+    #   displayName: Check environment variables
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: 'env | sort'
+    #   env:
+    #     TF_VAR_access_key: '$(access_key)'
+    #     TF_VAR_client_id: '$(client_id)'
+    #     TF_VAR_client_secret: '$(client_secret)'
+    #     TF_VAR_subscription_id: '$(subscription_id)'
+    #     TF_VAR_tenant_id: '$(tenant_id)'
     
-    # Run Terraform Init on the pipeline agent 
-    # ToDo: Replace the resource group name, storage account name, and container name below
-    - task: TerraformTaskV4@4
-      displayName: 'Terrafom init'
-      inputs:
-        provider: 'azurerm'
-        command: 'init'
-        backendType: azurerm
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        backendServiceArm: '$(azureServiceConnectionId)'
-        backendAzureRmResourceGroupName: 'tfstate-rg'
-        backendAzureRmStorageAccountName: 'udacitytfstate1422'
-        backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'test.terraform.tfstate'
+    # # Run Terraform Init on the pipeline agent 
+    # # ToDo: Replace the resource group name, storage account name, and container name below
+    # - task: TerraformTaskV4@4
+    #   displayName: 'Terrafom init'
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'init'
+    #     backendType: azurerm
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+    #     backendServiceArm: '$(azureServiceConnectionId)'
+    #     backendAzureRmResourceGroupName: 'tfstate-rg'
+    #     backendAzureRmStorageAccountName: 'udacitytfstate1422'
+    #     backendAzureRmContainerName: 'tfstate'
+    #     backendAzureRmKey: 'test.terraform.tfstate'
 
-    - task: TerraformTaskV4@4
-      displayName: Terraform validate
-      inputs:
-        provider: 'azurerm'
-        command: 'validate'
+    # - task: TerraformTaskV4@4
+    #   displayName: Terraform validate
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'validate'
 
-    # Run Terraform Plan
-    - task: TerraformTaskV4@4
-      displayName: Terraform plan
-      inputs:
-        provider: 'azurerm'
-        command: 'plan'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-      env:
-        TF_VAR_access_key: '$(access_key)'
-        TF_VAR_client_id: '$(client_id)'
-        TF_VAR_client_secret: '$(client_secret)'
-        TF_VAR_subscription_id: '$(subscription_id)'
-        TF_VAR_tenant_id: '$(tenant_id)'
+    # # Run Terraform Plan
+    # - task: TerraformTaskV4@4
+    #   displayName: Terraform plan
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'plan'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+    #   env:
+    #     TF_VAR_access_key: '$(access_key)'
+    #     TF_VAR_client_id: '$(client_id)'
+    #     TF_VAR_client_secret: '$(client_secret)'
+    #     TF_VAR_subscription_id: '$(subscription_id)'
+    #     TF_VAR_tenant_id: '$(tenant_id)'
 
-    # Run Terraform Apply
-    - task: TerraformTaskV4@4
-      displayName: Terraform apply
-      inputs:
-        provider: 'azurerm'
-        command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-      env:
-        TF_VAR_access_key: '$(access_key)'
-        TF_VAR_client_id: '$(client_id)'
-        TF_VAR_client_secret: '$(client_secret)'
-        TF_VAR_subscription_id: '$(subscription_id)'
-        TF_VAR_tenant_id: '$(tenant_id)'
+    # # Run Terraform Apply
+    # - task: TerraformTaskV4@4
+    #   displayName: Terraform apply
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'apply'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+    #   env:
+    #     TF_VAR_access_key: '$(access_key)'
+    #     TF_VAR_client_id: '$(client_id)'
+    #     TF_VAR_client_secret: '$(client_secret)'
+    #     TF_VAR_subscription_id: '$(subscription_id)'
+    #     TF_VAR_tenant_id: '$(tenant_id)'
 
     #--------------------------------------------#
     # Selenium (UI) Test Suite - Archive the package  
@@ -158,23 +158,23 @@ stages:
   jobs:
   #--------------------------------------------#  
   # Deploy FakeRestAPI Web App
-  - deployment: FakeRestAPI
-    displayName: FakeRestAPI
-    environment:
-      name: test
-      resourceType: VirtualMachine
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App'
-            inputs:
-              azureSubscription: '$(azureServiceConnectionId)'
-              appName: 'udacity-AppService'
-              appType: webApp
-              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
-              deploymentMethod: zipDeploy
+  # - deployment: FakeRestAPI
+  #   displayName: FakeRestAPI
+  #   environment:
+  #     name: test
+  #     resourceType: VirtualMachine
+  #   strategy:
+  #     runOnce:
+  #       deploy:
+  #         steps:
+  #         - task: AzureWebApp@1
+  #           displayName: 'Deploy Azure Web App'
+  #           inputs:
+  #             azureSubscription: '$(azureServiceConnectionId)'
+  #             appName: 'udacity-AppService'
+  #             appType: webApp
+  #             package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+  #             deploymentMethod: zipDeploy
           #--------------------------------------------#    
           # Run JMeter test suite against the App Service
           # - task: CmdLine@2
@@ -190,102 +190,102 @@ stages:
               
   #--------------------------------------------#  
   # Selenium | Functional UI Tests
-  - deployment: VMDeploy
-    displayName: Selenium Tests
-    environment:
-      name: test
-      resourceType: VirtualMachine
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          # - download: current
-          #   artifact: drop-uitests
+  # - deployment: VMDeploy
+  #   displayName: Selenium Tests
+  #   environment:
+  #     name: test
+  #     resourceType: VirtualMachine
+  #   strategy:
+  #     runOnce:
+  #       deploy:
+  #         steps:
+  #         # - download: current
+  #         #   artifact: drop-uitests
             
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: |           
-                #! /bin/bash
+  #         - task: Bash@3
+  #           inputs:
+  #             targetType: 'inline'
+  #             script: |           
+  #               #! /bin/bash
                 
-                # sudo apt-get upgrade -y
-                # sudo apt-get install python-pip -y
-                # sudo apt-get install unzip -y
-                # sudo apt-get install -y chromium-browser
-                # pip install selenium
+  #               # sudo apt-get upgrade -y
+  #               # sudo apt-get install python-pip -y
+  #               # sudo apt-get install unzip -y
+  #               # sudo apt-get install -y chromium-browser
+  #               # pip install selenium
 
-                cd ~
-                pwd
-                DIR=/home/azureuser/app
-                if [ ! -d "$DIR" ]; then
-                    mkdir app
-                fi
-                # mv /home/azureuser/azagent/_work/1/drop-uitests/$(Build.BuildId)-uitests.zip app
-                cd app
-                # unzip -o $(Build.BuildId)-uitests.zip
-                FILE=/home/azureuser/app/chromedriver_linux64.zip
-                if [ ! -f "$FILE" ]; then
-                    LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-                    wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-                    unzip -o chromedriver_linux64.zip
-                    sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
-                fi
-                # export PATH=$PATH:/home/azureuser/app
-                # echo "Starting Selenium Tests"
-                # python3 uitest.py >> selenium.log
-                # echo "Completed Selenium Tests. Check selenium.log for results."
+  #               cd ~
+  #               pwd
+  #               DIR=/home/azureuser/app
+  #               if [ ! -d "$DIR" ]; then
+  #                   mkdir app
+  #               fi
+  #               # mv /home/azureuser/azagent/_work/1/drop-uitests/$(Build.BuildId)-uitests.zip app
+  #               cd app
+  #               # unzip -o $(Build.BuildId)-uitests.zip
+  #               FILE=/home/azureuser/app/chromedriver_linux64.zip
+  #               if [ ! -f "$FILE" ]; then
+  #                   LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+  #                   wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+  #                   unzip -o chromedriver_linux64.zip
+  #                   sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
+  #               fi
+  #               # export PATH=$PATH:/home/azureuser/app
+  #               # echo "Starting Selenium Tests"
+  #               # python3 uitest.py >> selenium.log
+  #               # echo "Completed Selenium Tests. Check selenium.log for results."
 
 #--------------------------------------------#  
 # TEST STAGE
 #--------------------------------------------#    
-- stage: Test
-  jobs:
-  - job: TestNewMan
-    displayName: Postman Tests
-    steps:
-    - task: NodeTool@0
-      displayName: Install Node v18.X
-      inputs:
-        versionSpec: '18.x'
-        checkLatest: true
-    #--------------------------------------------#    
-    # Postman - Install Newman    
-    # ToDo: Update the command and verify the working directory
-    - task: CmdLine@2
-      displayName: Install Newman
-      inputs:
-        script: 'npm install -g newman'
-        workingDirectory: $(System.DefaultWorkingDirectory)
-    # Postman Data Validation Test Suite    
-    # ToDo: Verify the working directory
-    - task: CmdLine@2
-      displayName: Run Data Validation Tests
-      continueOnError: true
-      inputs:
-        script: 'newman run Validation_Test.json -e Env.json --reporters cli,junit --reporter-junit-export Results/TEST-DataValidation.xml'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-    # Postman Regression Test Suite    
-    # ToDo: Verify the working directory
-    - task: CmdLine@2
-      displayName: Run Regression Tests
-      continueOnError: true
-      inputs:
-        script: 'newman run Regression_Test.json -e Env.json --reporters cli,junit --reporter-junit-export Results/TEST-Regression.xml'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-    - task: CmdLine@2
-      inputs:
-        script: 'ls -la ./Results/'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-    # Postman - Publish Results 
-    # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
-    - task: PublishTestResults@2
-      displayName: 'Publish Newman test results'
-      inputs:
-        testResultsFormat: 'JUnit'
-        testResultsFiles: '**/TEST-*.xml'
-        # searchFolder: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-        mergeTestResults: true
-        testRunTitle: "Newman Test Results"
+# - stage: Test
+#   jobs:
+#   - job: TestNewMan
+#     displayName: Postman Tests
+#     steps:
+#     - task: NodeTool@0
+#       displayName: Install Node v18.X
+#       inputs:
+#         versionSpec: '18.x'
+#         checkLatest: true
+#     #--------------------------------------------#    
+#     # Postman - Install Newman    
+#     # ToDo: Update the command and verify the working directory
+#     - task: CmdLine@2
+#       displayName: Install Newman
+#       inputs:
+#         script: 'npm install -g newman'
+#         workingDirectory: $(System.DefaultWorkingDirectory)
+#     # Postman Data Validation Test Suite    
+#     # ToDo: Verify the working directory
+#     - task: CmdLine@2
+#       displayName: Run Data Validation Tests
+#       continueOnError: true
+#       inputs:
+#         script: 'newman run Validation_Test.json -e Env.json --reporters cli,junit --reporter-junit-export Results/TEST-DataValidation.xml'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+#     # Postman Regression Test Suite    
+#     # ToDo: Verify the working directory
+#     - task: CmdLine@2
+#       displayName: Run Regression Tests
+#       continueOnError: true
+#       inputs:
+#         script: 'newman run Regression_Test.json -e Env.json --reporters cli,junit --reporter-junit-export Results/TEST-Regression.xml'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+#     - task: CmdLine@2
+#       inputs:
+#         script: 'ls -la ./Results/'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+#     # Postman - Publish Results 
+#     # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
+#     - task: PublishTestResults@2
+#       displayName: 'Publish Newman test results'
+#       inputs:
+#         testResultsFormat: 'JUnit'
+#         testResultsFiles: '**/TEST-*.xml'
+#         # searchFolder: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+#         mergeTestResults: true
+#         testRunTitle: "Newman Test Results"
 
 # - stage: JMeterTests
 #   displayName: JMeter Tests
@@ -358,6 +358,7 @@ stages:
             displayName: 'Download Perf Test'
             artifact: drop-perftests
           - bash: |
+              unzip -o $(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip -d .
               sudo apt-get install openjdk-11-jre-headless -y
               java -version
               wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.tgz -O jmeter.tgz
@@ -368,18 +369,18 @@ stages:
               ls -la
             displayName: Install JMeter
           - bash: |
-              apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/stress-test.jmx \
+              pwd
+              apache-jmeter-5.6.2/bin/jmeter -n -t stress-test.jmx \
                                             -l log/jmeter/stress-test-result.csv \
                                             -e -f -o log/jmeter/stress-test-html-report \
                                             -j log/jmeter/stress-test-jmeter.log
-              pwd
             displayName: JMeter stress test
           - bash: |
-              apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/endurance-test.jmx \
+              pwd
+              apache-jmeter-5.6.2/bin/jmeter -n -t endurance-test.jmx \
                                             -l log/jmeter/endurance-test-result.csv \
                                             -e -f -o log/jmeter/endurance-test-html-report \
                                             -j log/jmeter/endurance-test-jmeter.log
-              pwd
             displayName: JMeter endurance test
           - task: ArchiveFiles@2
             displayName: Archive JMeter stress test HTML report
@@ -451,66 +452,66 @@ stages:
 #--------------------------------------------#  
 # DESTROY STAGE
 #--------------------------------------------#  
-- stage: Destroy
-  jobs:
-  - job: DestroyInfrastructure
-    condition: false
-    steps:
-    #--------------------------------------------#  
-    # Use Terraform to create the Infrastructure      
-    # Install Terraform on the pipeline agent 
-    - task: TerraformInstaller@1
-      displayName: 'Terrafom installation'
-      inputs:
-        terraformVersion: 'latest'
+# - stage: Destroy
+#   jobs:
+#   - job: DestroyInfrastructure
+#     condition: false
+#     steps:
+#     #--------------------------------------------#  
+#     # Use Terraform to create the Infrastructure      
+#     # Install Terraform on the pipeline agent 
+#     - task: TerraformInstaller@1
+#       displayName: 'Terrafom installation'
+#       inputs:
+#         terraformVersion: 'latest'
 
-    # Install SSH key
-    - task: InstallSSHKey@0
-      displayName: Security Access
-      inputs:
-        knownHostsEntry: $(public_key)'
-        sshPublicKey: '$(public_key)'
-        sshKeySecureFile: 'id_rsa'
+#     # Install SSH key
+#     - task: InstallSSHKey@0
+#       displayName: Security Access
+#       inputs:
+#         knownHostsEntry: $(public_key)'
+#         sshPublicKey: '$(public_key)'
+#         sshKeySecureFile: 'id_rsa'
     
-    - task: Bash@3
-      displayName: Check environment variables
-      inputs:
-        targetType: 'inline'
-        script: 'env | sort'
-      env:
-        TF_VAR_access_key: '$(access_key)'
-        TF_VAR_client_id: '$(client_id)'
-        TF_VAR_client_secret: '$(client_secret)'
-        TF_VAR_subscription_id: '$(subscription_id)'
-        TF_VAR_tenant_id: '$(tenant_id)'
+#     - task: Bash@3
+#       displayName: Check environment variables
+#       inputs:
+#         targetType: 'inline'
+#         script: 'env | sort'
+#       env:
+#         TF_VAR_access_key: '$(access_key)'
+#         TF_VAR_client_id: '$(client_id)'
+#         TF_VAR_client_secret: '$(client_secret)'
+#         TF_VAR_subscription_id: '$(subscription_id)'
+#         TF_VAR_tenant_id: '$(tenant_id)'
     
-    # Run Terraform Init on the pipeline agent 
-    # ToDo: Replace the resource group name, storage account name, and container name below
-    - task: TerraformTaskV4@4
-      displayName: 'Terrafom init'
-      inputs:
-        provider: 'azurerm'
-        command: 'init'
-        backendType: azurerm
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        backendServiceArm: '$(azureServiceConnectionId)'
-        backendAzureRmResourceGroupName: 'tfstate-rg'
-        backendAzureRmStorageAccountName: 'udacitytfstate1422'
-        backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'test.terraform.tfstate'
+#     # Run Terraform Init on the pipeline agent 
+#     # ToDo: Replace the resource group name, storage account name, and container name below
+#     - task: TerraformTaskV4@4
+#       displayName: 'Terrafom init'
+#       inputs:
+#         provider: 'azurerm'
+#         command: 'init'
+#         backendType: azurerm
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+#         backendServiceArm: '$(azureServiceConnectionId)'
+#         backendAzureRmResourceGroupName: 'tfstate-rg'
+#         backendAzureRmStorageAccountName: 'udacitytfstate1422'
+#         backendAzureRmContainerName: 'tfstate'
+#         backendAzureRmKey: 'test.terraform.tfstate'
 
-    # ToDo: Change the workingDirectory path, as applicable to you
-    # Destroy the resources in Azure by running a separate pipeline. 
-    - task: TerraformTaskV4@4
-      displayName: Terraform destroy
-      inputs:
-        provider: 'azurerm'
-        command: 'destroy'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-      env:
-        TF_VAR_access_key: '$(access_key)'
-        TF_VAR_client_id: '$(client_id)'
-        TF_VAR_client_secret: '$(client_secret)'
-        TF_VAR_subscription_id: '$(subscription_id)'
-        TF_VAR_tenant_id: '$(tenant_id)'
+#     # ToDo: Change the workingDirectory path, as applicable to you
+#     # Destroy the resources in Azure by running a separate pipeline. 
+#     - task: TerraformTaskV4@4
+#       displayName: Terraform destroy
+#       inputs:
+#         provider: 'azurerm'
+#         command: 'destroy'
+#         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+#         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+#       env:
+#         TF_VAR_access_key: '$(access_key)'
+#         TF_VAR_client_id: '$(client_id)'
+#         TF_VAR_client_secret: '$(client_secret)'
+#         TF_VAR_subscription_id: '$(subscription_id)'
+#         TF_VAR_tenant_id: '$(tenant_id)'
