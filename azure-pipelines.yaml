@@ -175,65 +175,6 @@ stages:
   #             appType: webApp
   #             package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   #             deploymentMethod: zipDeploy
-          #--------------------------------------------#    
-          # Run JMeter test suite against the App Service
-          # - task: CmdLine@2
-          #   inputs:
-          #     script: |
-          #       pwd
-          #       wget "https://apache.mirrors.lucidnetworks.net//jmeter/binaries/apache-jmeter-5.6.2.tgz"
-          #       tar -xf apache-jmeter-5.6.2.tgz
-          #       unzip -o $(Build.BuildId)-perftests.zip
-          #       ./apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/stress-test.jmx -j stress-test-jmeter.log -l stress-test-result.csv -e -f -o log/jmeter/stress-test-html-report
-          #       ./apache-jmeter-5.6.2/bin/jmeter -n -t automatedtesting/jmeter/endurance-test.jmx -j endurance-test-jmeter.log -l endurance-test-result.csv -e -f -o log/jmeter/endurance-test-html-report                                                                    
-          #     workingDirectory: $(Pipeline.Workspace)/drop-perftests
-              
-  #--------------------------------------------#  
-  # Selenium | Functional UI Tests
-  - deployment: VMDeploy
-    displayName: Selenium Tests
-    environment:
-      name: test
-      resourceType: VirtualMachine
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          # - download: current
-          #   artifact: drop-uitest
-            
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: |           
-                #! /bin/bash
-                
-                sudo apt-get upgrade -y
-                sudo apt-get install python3-pip -y
-                sudo apt-get install unzip -y
-                sudo apt-get install -y chromium-browser
-                pip3 install selenium
-
-                cd ~
-                pwd
-                DIR=/home/azureuser/app
-                if [ ! -d "$DIR" ]; then
-                    mkdir app
-                fi
-                # mv /home/azureuser/azagent/_work/1/drop-uitest/$(Build.BuildId)-uitest.zip app
-                cd app
-                # unzip -o $(Build.BuildId)-uitest.zip
-                FILE=/home/azureuser/app/chromedriver_linux64.zip
-                if [ ! -f "$FILE" ]; then
-                    LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-                    wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-                    unzip -o chromedriver_linux64.zip
-                    sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
-                fi
-                # export PATH=$PATH:/home/azureuser/app
-                # echo "Starting Selenium Tests"
-                # python3 uitest.py >> selenium.log
-                # echo "Completed Selenium Tests. Check selenium.log for results."
 
 #--------------------------------------------#  
 # TEST STAGE
@@ -371,15 +312,47 @@ stages:
             displayName: 'Download Selenium'
             artifact: drop-uitest
           - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |           
+                #! /bin/bash
+                
+                sudo apt-get upgrade -y
+                sudo apt-get install python3-pip -y
+                sudo apt-get install unzip -y
+                sudo apt-get install -y chromium-browser
+                pip3 install selenium
+
+                cd ~
+                pwd
+                DIR=/home/azureuser/app
+                if [ ! -d "$DIR" ]; then
+                    mkdir app
+                fi
+                # mv /home/azureuser/azagent/_work/1/drop-uitest/$(Build.BuildId)-uitest.zip app
+                cd app
+                # unzip -o $(Build.BuildId)-uitest.zip
+                FILE=/home/azureuser/app/chromedriver_linux64.zip
+                if [ ! -f "$FILE" ]; then
+                    LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+                    wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+                    unzip -o chromedriver_linux64.zip
+                    sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
+                fi
+                # export PATH=$PATH:/home/azureuser/app
+                # echo "Starting Selenium Tests"
+                # python3 uitest.py >> selenium.log
+                # echo "Completed Selenium Tests. Check selenium.log for results."
+          - task: Bash@3
             displayName: Selenium UI Tests
             inputs:
               targetType: 'inline'
               script: |
                 unzip -o $(Pipeline.Workspace)/drop-uitest/$(Build.BuildId)-uitest.zip -d .
                 sudo mkdir -p /var/log/selenium
-                sudo chmod 664 /var/log/selenium
+                sudo chmod 664 /var/log/selenium                
                 
-                sudo python3 -u uitest.py 2>&1 | sudo tee -a /var/log/selenium/selenium-test.log
+                python3 -u uitest.py 2>&1 | sudo tee -a /var/log/selenium/selenium-test.log
                 # copy selenium log file to $(System.DefaultWorkingDirectory)/log/selenium/
                 cd $(System.DefaultWorkingDirectory)
                 mkdir -p log/selenium
