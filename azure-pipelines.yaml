@@ -28,84 +28,84 @@ stages:
   - job: BuildInfrastructure
     displayName: Build Infrastructure
     steps:
-    # #--------------------------------------------#  
-    # # Use Terraform to create the Infrastructure      
-    # # Install Terraform on the pipeline agent 
-    # - task: TerraformInstaller@1
-    #   displayName: 'Terrafom installation'
-    #   inputs:
-    #     terraformVersion: 'latest'
+    #--------------------------------------------#  
+    # Use Terraform to create the Infrastructure      
+    # Install Terraform on the pipeline agent 
+    - task: TerraformInstaller@1
+      displayName: 'Terrafom installation'
+      inputs:
+        terraformVersion: 'latest'
 
-    # # Install SSH key
-    # - task: InstallSSHKey@0
-    #   displayName: Security Access
-    #   inputs:
-    #     knownHostsEntry: $(public_key)'
-    #     sshPublicKey: '$(public_key)'
-    #     sshKeySecureFile: 'id_rsa'
+    # Install SSH key
+    - task: InstallSSHKey@0
+      displayName: Security Access
+      inputs:
+        knownHostsEntry: $(public_key)'
+        sshPublicKey: '$(public_key)'
+        sshKeySecureFile: 'id_rsa'
     
-    # - task: Bash@3
-    #   displayName: Check environment variables
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: 'env | sort'
-    #   env:
-    #     TF_VAR_access_key: '$(access_key)'
-    #     TF_VAR_client_id: '$(client_id)'
-    #     TF_VAR_client_secret: '$(client_secret)'
-    #     TF_VAR_subscription_id: '$(subscription_id)'
-    #     TF_VAR_tenant_id: '$(tenant_id)'
+    - task: Bash@3
+      displayName: Check environment variables
+      inputs:
+        targetType: 'inline'
+        script: 'env | sort'
+      env:
+        TF_VAR_access_key: '$(access_key)'
+        TF_VAR_client_id: '$(client_id)'
+        TF_VAR_client_secret: '$(client_secret)'
+        TF_VAR_subscription_id: '$(subscription_id)'
+        TF_VAR_tenant_id: '$(tenant_id)'
     
-    # # Run Terraform Init on the pipeline agent 
-    # # ToDo: Replace the resource group name, storage account name, and container name below
-    # - task: TerraformTaskV4@4
-    #   displayName: 'Terrafom init'
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'init'
-    #     backendType: azurerm
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     backendServiceArm: '$(azureServiceConnectionId)'
-    #     backendAzureRmResourceGroupName: 'tfstate-rg'
-    #     backendAzureRmStorageAccountName: 'udacitytfstate1422'
-    #     backendAzureRmContainerName: 'tfstate'
-    #     backendAzureRmKey: 'test.terraform.tfstate'
+    # Run Terraform Init on the pipeline agent 
+    # ToDo: Replace the resource group name, storage account name, and container name below
+    - task: TerraformTaskV4@4
+      displayName: 'Terrafom init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendType: azurerm
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        backendServiceArm: '$(azureServiceConnectionId)'
+        backendAzureRmResourceGroupName: 'tfstate-rg'
+        backendAzureRmStorageAccountName: 'udacitytfstate1422'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'test.terraform.tfstate'
 
-    # - task: TerraformTaskV4@4
-    #   displayName: Terraform validate
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'validate'
+    - task: TerraformTaskV4@4
+      displayName: Terraform validate
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
 
-    # # Run Terraform Plan
-    # - task: TerraformTaskV4@4
-    #   displayName: Terraform plan
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'plan'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-    #   env:
-    #     TF_VAR_access_key: '$(access_key)'
-    #     TF_VAR_client_id: '$(client_id)'
-    #     TF_VAR_client_secret: '$(client_secret)'
-    #     TF_VAR_subscription_id: '$(subscription_id)'
-    #     TF_VAR_tenant_id: '$(tenant_id)'
+    # Run Terraform Plan
+    - task: TerraformTaskV4@4
+      displayName: Terraform plan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+      env:
+        TF_VAR_access_key: '$(access_key)'
+        TF_VAR_client_id: '$(client_id)'
+        TF_VAR_client_secret: '$(client_secret)'
+        TF_VAR_subscription_id: '$(subscription_id)'
+        TF_VAR_tenant_id: '$(tenant_id)'
 
-    # # Run Terraform Apply
-    # - task: TerraformTaskV4@4
-    #   displayName: Terraform apply
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'apply'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-    #   env:
-    #     TF_VAR_access_key: '$(access_key)'
-    #     TF_VAR_client_id: '$(client_id)'
-    #     TF_VAR_client_secret: '$(client_secret)'
-    #     TF_VAR_subscription_id: '$(subscription_id)'
-    #     TF_VAR_tenant_id: '$(tenant_id)'
+    # Run Terraform Apply
+    - task: TerraformTaskV4@4
+      displayName: Terraform apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+      env:
+        TF_VAR_access_key: '$(access_key)'
+        TF_VAR_client_id: '$(client_id)'
+        TF_VAR_client_secret: '$(client_secret)'
+        TF_VAR_subscription_id: '$(subscription_id)'
+        TF_VAR_tenant_id: '$(tenant_id)'
 
     #--------------------------------------------#
     # Selenium (UI) Test Suite - Archive the package  
@@ -378,7 +378,7 @@ stages:
 - stage: Destroy
   jobs:
   - job: DestroyInfrastructure
-    condition: true
+    condition: false
     steps:
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
