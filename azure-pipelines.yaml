@@ -1,4 +1,4 @@
-name: Azure Pipelines
+name: Azure Pipelines $(Date:yyyyMMdd)$(Rev:.r)
 
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
@@ -363,7 +363,7 @@ stages:
                 mkdir -p log/selenium
                 pwd
                 sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
-                ls -la
+                ls -la 
 
                 # sudo mkdir /var/logs
                 # python3 uitests.py > ui-logs.log
@@ -378,7 +378,7 @@ stages:
 - stage: Destroy
   jobs:
   - job: DestroyInfrastructure
-    condition: false
+    condition: true
     steps:
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
