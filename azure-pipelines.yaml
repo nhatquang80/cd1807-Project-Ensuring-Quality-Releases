@@ -378,7 +378,7 @@ stages:
 - stage: Destroy
   jobs:
   - job: DestroyInfrastructure
-    condition: false
+    condition: true
     steps:
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
