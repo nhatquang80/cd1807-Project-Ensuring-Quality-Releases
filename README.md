@@ -1,7 +1,3 @@
-terraform init -backend-config="access_key=$ARM_ACCESS_KEY"
-
-terraform plan -var-file="terraform.tfvars"
-
 # Project Starter
 This repository contains the starter code for the **Ensuring Quality Releases** project of the cd1807 Ensuring Quality Releases (Quality Assurance) course taught by Nathan Anderson. 
 
