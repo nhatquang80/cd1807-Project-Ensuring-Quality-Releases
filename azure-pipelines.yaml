@@ -154,147 +154,147 @@ stages:
 #--------------------------------------------#  
 # DEPLOYMENT STAGE
 #--------------------------------------------#    
-# - stage: Deploy
-#   jobs:
+- stage: Deploy
+  jobs:
   #--------------------------------------------#  
   # Deploy FakeRestAPI Web App
-  # - deployment: FakeRestAPI
-  #   displayName: FakeRestAPI
-  #   environment:
-  #     name: test
-  #     resourceType: VirtualMachine
-  #   strategy:
-  #     runOnce:
-  #       deploy:
-  #         steps:
-  #         - task: AzureWebApp@1
-  #           displayName: 'Deploy Azure Web App'
-  #           inputs:
-  #             azureSubscription: '$(azureServiceConnectionId)'
-  #             appName: 'udacity-AppService'
-  #             appType: webApp
-  #             package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
-  #             deploymentMethod: zipDeploy
+  - deployment: FakeRestAPI
+    displayName: FakeRestAPI
+    environment:
+      name: test
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: '$(azureServiceConnectionId)'
+              appName: 'udacity-AppService'
+              appType: webApp
+              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+              deploymentMethod: zipDeploy
 
 #--------------------------------------------#  
 # TEST STAGE
 #--------------------------------------------#    
-# - stage: Test
-#   jobs:
-#   - job: TestNewMan
-#     displayName: Postman Tests
-#     steps:
-#     - task: NodeTool@0
-#       displayName: Install Node v18.X
-#       inputs:
-#         versionSpec: '18.x'
-#         checkLatest: true
-#     #--------------------------------------------#    
-#     # Postman - Install Newman    
-#     # ToDo: Update the command and verify the working directory
-#     - task: CmdLine@2
-#       displayName: Install Newman
-#       inputs:
-#         script: 'npm install -g newman'
-#         workingDirectory: $(System.DefaultWorkingDirectory)
-#     # Postman Data Validation Test Suite    
-#     # ToDo: Verify the working directory
-#     - task: CmdLine@2
-#       displayName: Run Data Validation Tests
-#       continueOnError: true
-#       inputs:
-#         script: 'newman run Validation_Test.json -e Env.json --reporters cli,junit --reporter-junit-export Results/TEST-DataValidation.xml'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-#     # Postman Regression Test Suite    
-#     # ToDo: Verify the working directory
-#     - task: CmdLine@2
-#       displayName: Run Regression Tests
-#       continueOnError: true
-#       inputs:
-#         script: 'newman run Regression_Test.json -e Env.json --reporters cli,junit --reporter-junit-export Results/TEST-Regression.xml'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-#     - task: CmdLine@2
-#       inputs:
-#         script: 'ls -la ./Results/'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-#     # Postman - Publish Results 
-#     # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
-#     - task: PublishTestResults@2
-#       displayName: 'Publish Newman test results'
-#       inputs:
-#         testResultsFormat: 'JUnit'
-#         testResultsFiles: '**/TEST-*.xml'
-#         # searchFolder: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-#         mergeTestResults: true
-#         testRunTitle: "Newman Test Results"
+- stage: Test
+  jobs:
+  - job: TestNewMan
+    displayName: Postman Tests
+    steps:
+    - task: NodeTool@0
+      displayName: Install Node v18.X
+      inputs:
+        versionSpec: '18.x'
+        checkLatest: true
+    #--------------------------------------------#    
+    # Postman - Install Newman    
+    # ToDo: Update the command and verify the working directory
+    - task: CmdLine@2
+      displayName: Install Newman
+      inputs:
+        script: 'npm install -g newman'
+        workingDirectory: $(System.DefaultWorkingDirectory)
+    # Postman Data Validation Test Suite    
+    # ToDo: Verify the working directory
+    - task: CmdLine@2
+      displayName: Run Data Validation Tests
+      continueOnError: true
+      inputs:
+        script: 'newman run Validation_Test.json -e Env.json --reporters cli,junit --reporter-junit-export Results/TEST-DataValidation.xml'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+    # Postman Regression Test Suite    
+    # ToDo: Verify the working directory
+    - task: CmdLine@2
+      displayName: Run Regression Tests
+      continueOnError: true
+      inputs:
+        script: 'newman run Regression_Test.json -e Env.json --reporters cli,junit --reporter-junit-export Results/TEST-Regression.xml'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+    - task: CmdLine@2
+      inputs:
+        script: 'ls -la ./Results/'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+    # Postman - Publish Results 
+    # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
+    - task: PublishTestResults@2
+      displayName: 'Publish Newman test results'
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-*.xml'
+        # searchFolder: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+        mergeTestResults: true
+        testRunTitle: "Newman Test Results"
 
-# - stage: JMeterTests
-#   displayName: JMeter Tests
-#   jobs:
-#   - deployment: JMETERTests
-#     displayName: Test JMeter
-#     environment:
-#       name: test
-#       resourceType: VirtualMachine
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - download: current
-#             displayName: 'Download Perf Test'
-#             artifact: drop-perftests
-#           - bash: |
-#               unzip -o $(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip -d .
-#               sudo apt-get install openjdk-11-jre-headless -y
-#               sudo apt-get install zip
-#               java -version
-#               wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.tgz -O jmeter.tgz
-#               tar xzvf jmeter.tgz
-#               apache-jmeter-5.6.2/bin/jmeter --version
-#               mkdir -p log/jmeter
-#               pwd
-#               ls -la
-#             displayName: Install JMeter
-#           - bash: |
-#               pwd
-#               apache-jmeter-5.6.2/bin/jmeter -n -t stress-test.jmx \
-#                                             -l log/jmeter/stress-test-result.csv \
-#                                             -e -f -o log/jmeter/stress-test-html-report \
-#                                             -j log/jmeter/stress-test-jmeter.log
-#             displayName: JMeter stress test
-#           - bash: |
-#               pwd
-#               apache-jmeter-5.6.2/bin/jmeter -n -t endurance-test.jmx \
-#                                             -l log/jmeter/endurance-test-result.csv \
-#                                             -e -f -o log/jmeter/endurance-test-html-report \
-#                                             -j log/jmeter/endurance-test-jmeter.log
-#             displayName: JMeter endurance test
-#           - task: ArchiveFiles@2
-#             displayName: Archive JMeter stress test HTML report
-#             inputs:
-#               rootFolderOrFile: '$(System.DefaultWorkingDirectory)/log/jmeter/stress-test-html-report'
-#               includeRootFolder: false
-#               archiveType: 'zip'
-#               archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter/stress-test-html-report-$(Build.BuildId).zip'
-#               verbose: true
-#           - task: ArchiveFiles@2
-#             displayName: Archive JMeter endurance test HTML report
-#             inputs:
-#               rootFolderOrFile: '$(System.DefaultWorkingDirectory)/log/jmeter/endurance-test-html-report'
-#               includeRootFolder: false
-#               archiveType: 'zip'
-#               archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter/endurance-test-html-report-$(Build.BuildId).zip'
-#               verbose: true
-#           - bash: |
-#               rm -rf log/jmeter/stress-test-html-report
-#               rm -rf log/jmeter/endurance-test-html-report
-#               cd log/jmeter
-#               pwd
-#               ls -la
-#             displayName: Delete original JMeter test HTML reports
-#           - publish: $(System.DefaultWorkingDirectory)/log/jmeter
-#             displayName: 'Publish JMeter logs'
-#             artifact: drop-jmeter-logs
+- stage: JMeterTests
+  displayName: JMeter Tests
+  jobs:
+  - deployment: JMETERTests
+    displayName: Test JMeter
+    environment:
+      name: test
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            displayName: 'Download Perf Test'
+            artifact: drop-perftests
+          - bash: |
+              unzip -o $(Pipeline.Workspace)/drop-perftests/$(Build.BuildId)-perftests.zip -d .
+              sudo apt-get install openjdk-11-jre-headless -y
+              sudo apt-get install zip
+              java -version
+              wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.2.tgz -O jmeter.tgz
+              tar xzvf jmeter.tgz
+              apache-jmeter-5.6.2/bin/jmeter --version
+              mkdir -p log/jmeter
+              pwd
+              ls -la
+            displayName: Install JMeter
+          - bash: |
+              pwd
+              apache-jmeter-5.6.2/bin/jmeter -n -t stress-test.jmx \
+                                            -l log/jmeter/stress-test-result.csv \
+                                            -e -f -o log/jmeter/stress-test-html-report \
+                                            -j log/jmeter/stress-test-jmeter.log
+            displayName: JMeter stress test
+          - bash: |
+              pwd
+              apache-jmeter-5.6.2/bin/jmeter -n -t endurance-test.jmx \
+                                            -l log/jmeter/endurance-test-result.csv \
+                                            -e -f -o log/jmeter/endurance-test-html-report \
+                                            -j log/jmeter/endurance-test-jmeter.log
+            displayName: JMeter endurance test
+          - task: ArchiveFiles@2
+            displayName: Archive JMeter stress test HTML report
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/log/jmeter/stress-test-html-report'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter/stress-test-html-report-$(Build.BuildId).zip'
+              verbose: true
+          - task: ArchiveFiles@2
+            displayName: Archive JMeter endurance test HTML report
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/log/jmeter/endurance-test-html-report'
+              includeRootFolder: false
+              archiveType: 'zip'
+              archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter/endurance-test-html-report-$(Build.BuildId).zip'
+              verbose: true
+          - bash: |
+              rm -rf log/jmeter/stress-test-html-report
+              rm -rf log/jmeter/endurance-test-html-report
+              cd log/jmeter
+              pwd
+              ls -la
+            displayName: Delete original JMeter test HTML reports
+          - publish: $(System.DefaultWorkingDirectory)/log/jmeter
+            displayName: 'Publish JMeter logs'
+            artifact: drop-jmeter-logs
 
 - stage: UITests
   displayName: UI Tests - Selenium
